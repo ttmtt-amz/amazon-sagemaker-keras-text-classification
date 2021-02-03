@@ -14,6 +14,40 @@ In this workshop, you will work on this advanced use-case of building, training 
 
 The model we will develop will classify news articles into the appropriate news category. To train our model, we will be using the [UCI News Dataset](https://archive.ics.uci.edu/ml/datasets/News+Aggregator) which contains a list of about 420K articles and their appropriate categories (labels). There are four categories: Business (b), Science & Technology (t), Entertainment (e) and Health & Medicine (m).
 
+### Dependencies:
+
+This demo will require that you have staged the demo data into an S3 bucket within another account.  To do so do the following.
+
+1\.  Create a new S3 bucket titled 'sagemaker-aiml-data-<unique-name>'; you may accept all other default permissions for this bucket.
+
+After the bucket has been created we can seed the bucket with the AI/ML Dataset
+
+2\. Download and unzip the dataset locally
+
+```
+wget https://archive.ics.uci.edu/ml/machine-learning-databases/00359/NewsAggregatorDataset.zip && unzip NewsAggregatorDataset.zip
+```
+
+3\. Now lets also download and unzip the pre-trained glove embedding files (more on this in a bit):
+
+```
+wget http://nlp.stanford.edu/data/glove.6B.zip && unzip glove.6B.zip
+```
+
+Note: in case the above links don't work, please download and unzip the following file in the same directory:
+
+https://danilop.s3-eu-west-1.amazonaws.com/reInvent-Workshop-Data-Backup.zip
+
+4\. Remove the unnecessary files
+
+```
+rm 2pageSessions.csv glove.6B.200d.txt glove.6B.50d.txt glove.6B.300d.txt glove.6B.zip readme.txt NewsAggregatorDataset.zip && rm -rf __MACOSX/
+```
+
+At this point, you should only see two files: ‘glove.6B.100d.txt’ (word embeddings) and ‘newsCorpora.csv’ (dataset) in the this data directory.
+
+5.  Either using the S3 Web Console, or aws cli upload these files into the root directory of the 'sagemaker-aiml-data-<unique-name>' bucket.
+
 ### LAB1: Dataset Exploration
 
 Before we dive into the mechanics of our deep learning model, let’s explore the dataset and see what information we can use to predict the category. For this, we will use a notebook within Amazon SageMaker that we will can also utilize later on as our development machine.
@@ -50,41 +84,7 @@ This will open up a new tab showing the IAM role details. Here click on ‘Attac
 
 *Please make sure to check the checkbox next to the policy before hitting `Attach policy`*
 
-3\.	From the Amazon SageMaker console, click ‘Open Jupyter’ to navigate into the Jupyter notebook. Under ‘New’, select ‘Terminal’. This will open up a terminal session to your notebook instance.
-
-![SageMaker Notebook Terminal](/images/sm-keras-new-terminal.png)
-
-4\.	Switch into the ‘data’ directory
-
-```
-cd SageMaker/amazon-sagemaker-keras-text-classification/data
-```
-
-5\. Download and unzip the dataset
-
-```
-wget https://archive.ics.uci.edu/ml/machine-learning-databases/00359/NewsAggregatorDataset.zip && unzip NewsAggregatorDataset.zip
-```
-
-6\. Now lets also download and unzip the pre-trained glove embedding files (more on this in a bit):
-
-```
-wget http://nlp.stanford.edu/data/glove.6B.zip && unzip glove.6B.zip
-```
-
-Note: in case the above links don't work, please download and unzip the following file in the same directory:
-
-https://danilop.s3-eu-west-1.amazonaws.com/reInvent-Workshop-Data-Backup.zip
-
-7\. Remove the unnecessary files
-
-```
-rm 2pageSessions.csv glove.6B.200d.txt glove.6B.50d.txt glove.6B.300d.txt glove.6B.zip readme.txt NewsAggregatorDataset.zip && rm -rf __MACOSX/
-```
-
-At this point, you should only see two files: ‘glove.6B.100d.txt’ (word embeddings) and ‘newsCorpora.csv’ (dataset) in the this data directory.
-
-8\. Go back to the Jupyter notebook web UI. You should be in the folder called ‘sagemaker_keras_text_classification’. Please launch the notebook within it with the same name. Make sure the kernel you are running is ‘conda_tensorflow_p36’.
+3\.	From the Amazon SageMaker console, click ‘Open Jupyter’ to navigate into the Jupyter notebook.  You should be in the folder called ‘sagemaker_keras_text_classification’. Please launch the notebook within it with the same name. Make sure the kernel you are running is ‘conda_tensorflow_p36’.
 
 ![SageMaker notebook kernel](/images/sagemaker-notebook-kernel.png)
 
@@ -92,7 +92,7 @@ If it’s not, you can switch it from ‘Kernel -> Change kernel’ menu:
 
 ![SageMaker notebook change kernel](/images/sagemaker-notebook-kernel-change.png)
 
-9\. Once you individually run the cells within this notebook (shift+enter) through ‘Step 1: Data Exploration’, you should see some sample data (Note: do not run all cells within the notebook – the example is designed to be followed one cell at a time):
+4\. Once you individually run the cells within this notebook (shift+enter) through ‘Step 1: Data Exploration’, you should see some sample data (Note: do not run all cells within the notebook – the example is designed to be followed one cell at a time):
 
 ![SageMaker notebook data exploration](/images/sm-keras-7.png)
 
