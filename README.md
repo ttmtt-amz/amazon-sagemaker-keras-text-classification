@@ -18,7 +18,7 @@ The model we will develop will classify news articles into the appropriate news 
 
 This demo will require that you have staged the demo data into an S3 bucket within another account.  To do so do the following.
 
-1\.  Create a new S3 bucket titled 'sagemaker-aiml-data-<unique-name>'; you may accept all other default permissions for this bucket.
+1\.  Create a new S3 bucket titled 'sagemaker-aiml-data-&lt;unique-name&gt;'; you may accept all other default permissions for this bucket.
 
 After the bucket has been created we can seed the bucket with the AI/ML Dataset
 
@@ -46,7 +46,7 @@ rm 2pageSessions.csv glove.6B.200d.txt glove.6B.50d.txt glove.6B.300d.txt glove.
 
 At this point, you should only see two files: ‘glove.6B.100d.txt’ (word embeddings) and ‘newsCorpora.csv’ (dataset) in the this data directory.
 
-5.  Either using the S3 Web Console, or aws cli upload these files into the root directory of the 'sagemaker-aiml-data-<unique-name>' bucket.
+5.  Either using the S3 Web Console, or aws cli upload these files into the root directory of the 'sagemaker-aiml-data-&lt;unique-name&gt;' bucket.
 
 ### LAB1: Dataset Exploration
 
@@ -114,13 +114,16 @@ For your reference, all available AWS DL Containers images are described in the 
 
 https://docs.aws.amazon.com/dlami/latest/devguide/deep-learning-containers-images.html
 
-1\. Change directory to be in the path where we are going to create the custom container:
+1\. Open a new terminal by pressing the 'New' button on the top right and selecting 'Terminal'
+
+
+2\. Change directory to be in the path where we are going to create the custom container:
 
 ```
 cd ~/SageMaker/amazon-sagemaker-keras-text-classification/container/
 ```
 
-2\. Create a new Dockerfile using `vim Dockerfile`, hit `i` to insert and then paste the content below. In the line starting with `FROM`, replace `REGION` with the AWS region you are using today, for example `us-east-1`. To replace a word with `vim`, hit Escape and then `cw`, finally type the new word.
+3\. Create a new Dockerfile using `vim Dockerfile`, hit `i` to insert and then paste the content below. In the line starting with `FROM`, replace `REGION` with the AWS region you are using today, for example `us-east-1`. To replace a word with `vim`, hit Escape and then `cw`, finally type the new word.
 
 ```
 # Build an image that can do training and inference in SageMaker
@@ -143,7 +146,7 @@ Hit Escape and then `:wq` to save and exit vim.
 
 We start from the `base` image, add the code directory to our path, copy the code into that directory and finally set the WORKDIR to the same path so any subsequent RUN/ENTRYPOINT commands run by Amazon SageMaker will use this directory.
 
-3\. Build the custom image
+4\. Build the custom image
 
 #### Note: Slow down and read the below instruction very carefully. The next command(aws ecr get-login...) is a two step process. First, run the below command(aws ecr get-login...); Second, copy output of command(aws ecr get-login...) and run it as a command. 
 
